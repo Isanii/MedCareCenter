@@ -6,7 +6,7 @@ from app.api.v1.patients import (router as patient_router)
 from app.api.v1.appointments import (router as appointment_router)
 from app.api.v1.medical_records import (router as medical_record_router)
 from app.api.v1.invoices import (router as invoice_router)
-
+from app.api.v1.dashboard import (router as dashboard_router)
 
 
 from app.core.database import (
@@ -31,6 +31,7 @@ app.include_router(patient_router)
 app.include_router(appointment_router)
 app.include_router(medical_record_router)
 app.include_router(invoice_router)
+app.include_router(dashboard_router)
 
 @app.get("/")
 def root():
