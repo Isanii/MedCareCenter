@@ -2,8 +2,9 @@
 # Python
 # =========================
 __pycache__/
-app/__pycache__/
-app/../__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
 *.py[cod]
 *$py.class
 
@@ -21,7 +22,7 @@ ENV/
 # =========================
 # IDE
 # =========================
-.vscode/
+.vscode/    
 .idea/
 
 # =========================
