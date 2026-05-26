@@ -73,10 +73,10 @@ def get_patient(
 #Tạo bệnh nhân
 @router.post(
     "/",
-    response_model=PatientResponse
+    response_model=PatientResponse,
+    dependencies=[Depends(AdminOnly)]
 )
 def create_patient(
-    _ = AdminOnly,
     data: PatientCreate,
     db: Session = Depends(get_db)
 ):

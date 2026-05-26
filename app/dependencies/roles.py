@@ -14,27 +14,23 @@ from app.utils.constants import (
     UserRole
 )
 
-
-AdminOnly = Depends(
-    require_roles(
-        UserRole.ADMIN
-    )
+AdminOnly = require_roles(
+    UserRole.ADMIN
 )
 
-DoctorOnly = Depends(
-    require_roles(
-        UserRole.DOCTOR
-    )
+DoctorOnly = require_roles(
+    UserRole.DOCTOR
 )
 
-ReceptionistOnly = Depends(
-    require_roles(
-        UserRole.RECEPTIONIST
-    )
+PatientOnly = require_roles(
+    UserRole.PATIENT
 )
 
-PatientOnly = Depends(
-    require_roles(
-        UserRole.PATIENT
-    )
+ReceptionistOnly = require_roles(
+    UserRole.RECEPTIONIST
+)
+
+ReceptionOrAdmin = require_roles(
+    UserRole.ADMIN,
+    UserRole.RECEPTIONIST
 )

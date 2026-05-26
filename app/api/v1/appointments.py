@@ -35,10 +35,10 @@ router = APIRouter(
 
 @router.post(
     "/",
-    response_model=AppointmentResponse
+    response_model=AppointmentResponse,
+    dependencies=[Depends(PatientOnly)]
 )
 def create_appointment(
-    _ = PatientOnly,
     data: AppointmentCreate,
     db: Session = Depends(get_db)
 ):

@@ -29,41 +29,15 @@ router = APIRouter(
     tags=["Dashboard"]
 )
 
-#API Thống kê
+
 @router.get(
     "/",
-    response_model=DashboardResponse
+    response_model=DashboardResponse,
+    dependencies=[Depends(AdminOnly)]
 )
 def get_dashboard(
     db: Session = Depends(get_db)
 ):
-    """
-    Thống kê tổng quan hệ thống.
-    """
-
-    return (
-        DashboardService
-        .get_dashboard(
-            db
-        )
-    )
-
-
-
-
-@router.get(
-    "/",
-    response_model=DashboardResponse
-)
-def get_dashboard(
-    _ = AdminOnly,
-    db: Session = Depends(get_db)
-):
-    """
-    Dashboard chỉ dành cho Admin.
-    """
-
-    return (
-        DashboardService
-        .get_dashboard(db)
+    return DashboardService.get_dashboard(
+        db
     )

@@ -81,10 +81,12 @@ def get_doctor(
 #API Tạo bác sĩ
 @router.post(
     "/",
-    response_model=DoctorResponse
+    response_model=DoctorResponse,
+    dependencies= [
+        Depends(AdminOnly)
+    ]
 )
 def create_doctor(
-    _ = AdminOnly,
     data: DoctorCreate,
     db: Session = Depends(get_db)
 ):

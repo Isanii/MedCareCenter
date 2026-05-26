@@ -27,10 +27,10 @@ router = APIRouter(
 #Tạo bệnh án
 @router.post(
     "/",
-    response_model=MedicalRecordResponse
+    response_model=MedicalRecordResponse,
+    dependencies=[Depends(DoctorOnly)]
 )
 def create_record(
-    _ = DoctorOnly,
     data: MedicalRecordCreate,
     db: Session = Depends(get_db)
 ):

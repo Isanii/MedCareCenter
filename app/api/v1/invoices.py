@@ -16,11 +16,8 @@ from app.services.invoice_service import (
     InvoiceService
 )
 
-ReceptionOrAdmin = Depends(
-    require_roles(
-        UserRole.ADMIN,
-        UserRole.RECEPTIONIST
-    )
+from app.dependencies.roles import (
+    ReceptionOrAdmin
 )
 
 router = APIRouter(
@@ -99,10 +96,10 @@ def get_invoice(
 #Thanh toán
 @router.patch(
     "/{invoice_id}/status",
-    response_model=InvoiceResponse
+    response_model=InvoiceResponse,
+    dependencies=[Depends(ReceptionOrAdmin)]
 )
 def update_status(
-    _ = ReceptionOrAdmin,
     invoice_id: int,
     data: InvoiceUpdateStatus,
     db: Session = Depends(get_db)
