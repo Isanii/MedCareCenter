@@ -19,6 +19,11 @@ from app.services.dashboard_service import (
     DashboardService
 )
 
+#Admin mới xem được dashboard
+from app.dependencies.roles import (
+    AdminOnly
+)
+
 router = APIRouter(
     prefix="/api/v1/dashboard",
     tags=["Dashboard"]
@@ -41,4 +46,24 @@ def get_dashboard(
         .get_dashboard(
             db
         )
+    )
+
+
+
+
+@router.get(
+    "/",
+    response_model=DashboardResponse
+)
+def get_dashboard(
+    _ = AdminOnly,
+    db: Session = Depends(get_db)
+):
+    """
+    Dashboard chỉ dành cho Admin.
+    """
+
+    return (
+        DashboardService
+        .get_dashboard(db)
     )

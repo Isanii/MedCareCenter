@@ -22,6 +22,10 @@ from app.schemas.appointment import (
     AppointmentUpdateStatus
 )
 
+from app.dependencies.roles import (
+    PatientOnly
+)
+
 router = APIRouter(
     prefix="/api/v1/appointments",
     tags=["Appointments"]
@@ -34,6 +38,7 @@ router = APIRouter(
     response_model=AppointmentResponse
 )
 def create_appointment(
+    _ = PatientOnly,
     data: AppointmentCreate,
     db: Session = Depends(get_db)
 ):

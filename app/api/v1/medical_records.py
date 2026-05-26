@@ -15,6 +15,10 @@ from app.services.medical_record_service import (
     MedicalRecordService
 )
 
+from app.dependencies.roles import (
+    DoctorOnly
+)
+
 router = APIRouter(
     prefix="/api/v1/medical-records",
     tags=["Medical Records"]
@@ -26,6 +30,7 @@ router = APIRouter(
     response_model=MedicalRecordResponse
 )
 def create_record(
+    _ = DoctorOnly,
     data: MedicalRecordCreate,
     db: Session = Depends(get_db)
 ):

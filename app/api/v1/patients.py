@@ -22,6 +22,10 @@ from app.schemas.patient import (
     PatientResponse
 )
 
+from app.dependencies.roles import (
+    AdminOnly
+)
+
 router = APIRouter(
     prefix="/api/v1/patients",
     tags=["Patients"]
@@ -72,6 +76,7 @@ def get_patient(
     response_model=PatientResponse
 )
 def create_patient(
+    _ = AdminOnly,
     data: PatientCreate,
     db: Session = Depends(get_db)
 ):

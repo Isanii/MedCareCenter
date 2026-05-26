@@ -16,6 +16,13 @@ from app.services.invoice_service import (
     InvoiceService
 )
 
+ReceptionOrAdmin = Depends(
+    require_roles(
+        UserRole.ADMIN,
+        UserRole.RECEPTIONIST
+    )
+)
+
 router = APIRouter(
     prefix="/api/v1/invoices",
     tags=["Invoices"]
@@ -95,6 +102,7 @@ def get_invoice(
     response_model=InvoiceResponse
 )
 def update_status(
+    _ = ReceptionOrAdmin,
     invoice_id: int,
     data: InvoiceUpdateStatus,
     db: Session = Depends(get_db)
