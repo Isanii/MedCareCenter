@@ -57,8 +57,3 @@ alembic/__pycache__/
 .DS_Store
 Thumbs.db
 
-# =========================
-# Environment
-# =========================
-# KHÔNG ignore .env
-# .env
