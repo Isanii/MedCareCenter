@@ -15,6 +15,10 @@ from app.core.database import (
     Base,
     engine
 )
+
+from app.api.v1.messages import (
+    router as message_router
+)
 import app.models
 # Tạo bảng nếu chưa tồn tại
 Base.metadata.create_all(
@@ -68,6 +72,7 @@ app.include_router(medical_record_router)
 app.include_router(invoice_router)
 app.include_router(dashboard_router)
 app.include_router(user.router)
+app.include_router(message_router)
 @app.get("/")
 def root():
     return {

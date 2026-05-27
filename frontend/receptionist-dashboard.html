@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
 
     <title>
-        Doctor Dashboard
+        Receptionist Dashboard
     </title>
 
     <link
@@ -24,30 +24,35 @@
 <div class="sidebar">
 
     <div class="sidebar-header">
+
         MedCare
+
     </div>
 
     <a
-        href="doctor-dashboard.html"
+        href="receptionist-dashboard.html"
         class="active">
 
         Dashboard
 
     </a>
 
-    <a href="doctor-appointments.html">
+    <a href="patients.html">
 
-        Lịch khám
+        Bệnh nhân
+
+    </a>
+
+    <a href="appointments.html">
+
+        Lịch hẹn
 
     </a>
 
-    <a href="doctor-medical-records.html">
+    <a href="invoices.html">
 
-        Bệnh án
+        Hóa đơn
 
-    </a>
-    <a href="doctor-chat.html">
-        Chat
     </a>
 
     <a
@@ -66,7 +71,7 @@
 
         <h3>
 
-            Dashboard Bác sĩ
+            Dashboard Lễ tân
 
         </h3>
 
@@ -81,11 +86,11 @@
                 <div class="card-body">
 
                     <h6>
-                        Tổng lịch khám
+                        Tổng bệnh nhân
                     </h6>
 
                     <div
-                        id="appointmentCount"
+                        id="patientCount"
                         class="stat-number">
 
                         0
@@ -105,11 +110,11 @@
                 <div class="card-body">
 
                     <h6>
-                        Đang chờ khám
+                        Lịch hôm nay
                     </h6>
 
                     <div
-                        id="pendingCount"
+                        id="todayAppointmentCount"
                         class="stat-number">
 
                         0
@@ -129,11 +134,11 @@
                 <div class="card-body">
 
                     <h6>
-                        Đã hoàn thành
+                        Chờ xác nhận
                     </h6>
 
                     <div
-                        id="completedCount"
+                        id="pendingAppointmentCount"
                         class="stat-number">
 
                         0
@@ -153,11 +158,11 @@
                 <div class="card-body">
 
                     <h6>
-                        Bệnh án đã tạo
+                        Hóa đơn
                     </h6>
 
                     <div
-                        id="recordCount"
+                        id="invoiceCount"
                         class="stat-number">
 
                         0
@@ -172,13 +177,81 @@
 
     </div>
 
+
+    <div class="row mt-4">
+
+        <div class="col-md-6">
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    Chức năng lễ tân
+
+                </div>
+
+                <div class="card-body">
+
+                    <ul>
+
+                        <li>
+                            Tiếp nhận bệnh nhân
+                        </li>
+
+                        <li>
+                            Quản lý lịch hẹn
+                        </li>
+
+                        <li>
+                            Xác nhận lịch khám
+                        </li>
+
+                        <li>
+                            Quản lý hóa đơn
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    Thông tin tài khoản
+
+                </div>
+
+                <div
+                    class="card-body"
+                    id="userInfo">
+
+                    Đang tải...
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 <script src="assets/js/api.js"></script>
+
 <script src="assets/js/guard.js"></script>
+
 <script src="assets/js/role-guard.js"></script>
 
-<script src="assets/js/doctor-dashboard.js"></script>
+<script src="assets/js/receptionist-dashboard.js"></script>
 
 </body>
+
 </html>

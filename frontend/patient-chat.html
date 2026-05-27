@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+Chat với bệnh nhân
+</title>
+
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="assets/css/style.css">
+
+<style>
+
+#chatBox {
+
+    height: 500px;
+
+    overflow-y: auto;
+
+    border: 1px solid #ddd;
+
+    padding: 15px;
+
+    background: #fff;
+}
+
+.message {
+
+    margin-bottom: 10px;
+}
+
+.me {
+
+    text-align: right;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container mt-4">
+
+    <h3>
+        Chat với bác sĩ
+    </h3>
+
+    <div class="row">
+
+        <div class="col-md-3">
+
+            <input
+                id="receiverId"
+                class="form-control"
+                placeholder="Patient User ID">
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <div id="chatBox"></div>
+
+    <div class="input-group mt-3">
+
+        <input
+            id="messageInput"
+            class="form-control"
+            placeholder="Nhập tin nhắn">
+
+        <button
+            class="btn btn-primary"
+            onclick="sendMessage()">
+
+            Gửi
+
+        </button>
+
+    </div>
+
+</div>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/chat.js"></script>
+
+</body>
+</html>

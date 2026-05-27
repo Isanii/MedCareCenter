@@ -11,7 +11,7 @@ from .patient import Patient
 from .appointment import Appointment
 from .medical_record import MedicalRecord
 from .invoice import Invoice
-
+from .message import Message
 __all__ = [
     "User",
     "Doctor",

@@ -104,6 +104,16 @@ else {
                 "my-invoices.html"
             ];
 
+            const receptionistPages = [
+
+                "receptionist-dashboard.html",
+
+                "patients.html",
+
+                "appointments.html",
+
+                "invoices.html"
+            ];
 
             // ======================
             // ADMIN
@@ -171,6 +181,45 @@ else {
 
                     location.href =
                         "patient-dashboard.html";
+                }
+
+                return;
+            }
+
+            // ======================
+            // RECEPTIONIST
+            // ======================
+
+            if (
+                role === "receptionist"
+            ) {
+
+                if (
+
+                    doctorPages.includes(
+                        path
+                    )
+
+                    ||
+
+                    patientPages.includes(
+                        path
+                    )
+
+                    ||
+
+                    path ===
+                    "doctors.html"
+
+                    ||
+
+                    path ===
+                    "medical-records.html"
+
+                ) {
+
+                    location.href =
+                        "receptionist-dashboard.html";
                 }
 
                 return;

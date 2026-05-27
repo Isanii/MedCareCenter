@@ -89,6 +89,14 @@ form.addEventListener(
                 window.location.href =
                     "patient-dashboard.html";
             }
+            else if (
+                data.role ===
+                "receptionist"
+            ) {
+
+                window.location.href =
+                    "receptionist-dashboard.html";
+            }
             else {
 
                 window.location.href =
