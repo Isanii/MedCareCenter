@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Lịch hẹn của tôi</title>
+
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="assets/css/style.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="sidebar-header">
+
+        MedCare
+
+    </div>
+
+    <a href="patient-dashboard.html">
+
+        Dashboard
+
+    </a>
+
+       <a href="my-appointments.html">
+        Lịch hẹn của tôi
+    </a>
+
+    <a href="my-medical-records.html">
+        Bệnh án của tôi
+    </a>
+
+    <a href="my-invoices.html">
+        Hóa đơn của tôi
+    </a>
+
+    <a
+        href="#"
+        id="logoutBtn">
+
+        Logout
+
+    </a>
+
+</div>
+
+<div class="main-content">
+
+    <div
+        class="topbar
+               d-flex
+               justify-content-between">
+
+        <h3>
+            Lịch hẹn của tôi
+        </h3>
+
+        <button
+            class="btn btn-primary"
+            id="addAppointmentBtn">
+
+            Đặt lịch khám
+
+        </button>
+
+    </div>
+
+    <div class="card">
+
+        <div class="card-body">
+
+            <table
+                class="table table-striped">
+
+                <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Bác sĩ</th>
+
+                    <th>Thời gian</th>
+
+                    <th>Trạng thái</th>
+
+                    <th>Ghi chú</th>
+                    <th>
+                        Thao tác
+                    </th>
+                </tr>
+
+                </thead>
+
+                <tbody
+                    id="appointmentTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+<div
+    class="modal fade"
+    id="appointmentModal"
+    tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Đặt lịch khám
+
+                </h5>
+
+                <button
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <form id="appointmentForm">
+
+                    <div class="mb-3">
+
+                        <label>
+                            Bác sĩ
+                        </label>
+
+                        <select
+                            id="doctorId"
+                            class="form-select"
+                            required>
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>
+                            Ngày giờ khám
+                        </label>
+
+                        <input
+                            type="datetime-local"
+                            id="appointmentTime"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>
+                            Ghi chú
+                        </label>
+
+                        <textarea
+                            id="note"
+                            class="form-control">
+                        </textarea>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Hủy
+
+                </button>
+
+                <button
+                    class="btn btn-primary"
+                    id="saveAppointmentBtn">
+
+                    Đặt lịch
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="assets/js/api.js"></script>
+
+<script src="assets/js/guard.js"></script>
+<script src="assets/js/role-guard.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/my-appointments.js"></script>
+
+</body>
+</html>

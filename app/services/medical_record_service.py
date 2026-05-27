@@ -22,7 +22,11 @@ from app.schemas.medical_record import (
     MedicalRecordCreate,
     MedicalRecordUpdate
 )
+from app.models.user import User
 
+from app.repositories.patient_repository import (
+    PatientRepository
+)
 
 class MedicalRecordService:
 
@@ -46,6 +50,14 @@ class MedicalRecordService:
         if not appointment:
             raise ValueError(
                 "Không tìm thấy lịch hẹn"
+            )
+
+        if (
+            appointment.status
+            != "completed"
+        ):
+            raise ValueError(
+                "Chỉ được tạo bệnh án khi lịch hẹn đã hoàn thành"
             )
 
         existing = (
@@ -122,4 +134,103 @@ class MedicalRecordService:
         return (
             MedicalRecordRepository
             .get_all(db)
+        )
+    @staticmethod
+    def update_record(
+        db: Session,
+        record_id: int,
+        data: MedicalRecordUpdate
+    ):
+        """
+        Cập nhật bệnh án.
+        """
+
+        record = (
+            MedicalRecordRepository
+            .get_by_id(
+                db,
+                record_id
+            )
+        )
+
+        if not record:
+            raise ValueError(
+                "Không tìm thấy bệnh án"
+            )
+
+        if data.symptoms is not None:
+            record.symptoms = data.symptoms
+
+        if data.diagnosis is not None:
+            record.diagnosis = data.diagnosis
+
+        if data.prescription is not None:
+            record.prescription = data.prescription
+
+        if data.doctor_note is not None:
+            record.doctor_note = data.doctor_note
+
+        return (
+            MedicalRecordRepository
+            .update(
+                db,
+                record
+            )
+        )
+
+    @staticmethod
+    def delete_record(
+        db: Session,
+        record_id: int
+    ):
+        """
+        Xóa bệnh án.
+        """
+
+        record = (
+            MedicalRecordRepository
+            .get_by_id(
+                db,
+                record_id
+            )
+        )
+
+        if not record:
+            raise ValueError(
+                "Không tìm thấy bệnh án"
+            )
+
+        MedicalRecordRepository.delete(
+            db,
+            record
+        )
+    @staticmethod
+    def get_my_records(
+        db: Session,
+        current_user: User
+    ):
+        """
+        Bệnh án của bệnh nhân đang đăng nhập.
+        """
+
+        patient = (
+            PatientRepository
+            .get_by_user_id(
+                db,
+                current_user.id
+            )
+        )
+
+        if not patient:
+
+            raise ValueError(
+                "Không tìm thấy hồ sơ bệnh nhân"
+            )
+
+        return (
+            MedicalRecordRepository
+            .get_by_patient_id(
+                db,
+                patient.id
+            )
         )

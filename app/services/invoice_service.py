@@ -19,7 +19,15 @@ from app.repositories.appointment_repository import (
 from app.schemas.invoice import (
     InvoiceCreate
 )
+from app.utils.constants import (
+    PaymentStatus
+)
 
+from app.models.user import User
+
+from app.repositories.patient_repository import (
+    PatientRepository
+)
 
 class InvoiceService:
 
@@ -65,9 +73,9 @@ class InvoiceService:
         invoice = Invoice(
             appointment_id=data.appointment_id,
             amount=data.amount,
-            payment_status="unpaid"
+            payment_status=
+                PaymentStatus.UNPAID
         )
-
         return InvoiceRepository.create(
             db,
             invoice
@@ -94,10 +102,20 @@ class InvoiceService:
 
     @staticmethod
     def get_all(
-        db: Session
+        db: Session,
+        skip: int = 0,
+        limit: int = 20
     ):
-        return InvoiceRepository.get_all(
-            db
+        """
+        Lấy danh sách hóa đơn.
+        """
+
+        return (
+            InvoiceRepository.get_all(
+                db,
+                skip,
+                limit
+            )
         )
 
     @staticmethod
@@ -123,4 +141,57 @@ class InvoiceService:
         return InvoiceRepository.update(
             db,
             invoice
+        )
+    @staticmethod
+    def delete_invoice(
+        db: Session,
+        invoice_id: int
+    ):
+        invoice = (
+            InvoiceRepository
+            .get_by_id(
+                db,
+                invoice_id
+            )
+        )
+
+        if not invoice:
+            raise ValueError(
+                "Không tìm thấy hóa đơn"
+            )
+
+        InvoiceRepository.delete(
+            db,
+            invoice
+        )
+
+    @staticmethod
+    def get_my_invoices(
+        db: Session,
+        current_user: User
+    ):
+        """
+        Hóa đơn của bệnh nhân đang đăng nhập.
+        """
+
+        patient = (
+            PatientRepository
+            .get_by_user_id(
+                db,
+                current_user.id
+            )
+        )
+
+        if not patient:
+
+            raise ValueError(
+                "Không tìm thấy hồ sơ bệnh nhân"
+            )
+
+        return (
+            InvoiceRepository
+            .get_by_patient_id(
+                db,
+                patient.id
+            )
         )

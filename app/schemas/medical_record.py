@@ -41,13 +41,13 @@ class MedicalRecordUpdate(
 class MedicalRecordResponse(
     BaseModel
 ):
-    """
-    Thông tin bệnh án.
-    """
-
     id: int
 
     appointment_id: int
+
+    patient_name: str
+
+    doctor_name: str
 
     symptoms: str | None
 

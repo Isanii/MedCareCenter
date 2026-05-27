@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Medical Records</title>
+
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="assets/css/style.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="sidebar-header">
+        MedCare
+    </div>
+
+    <a href="dashboard.html">
+        Dashboard
+    </a>
+
+    <a href="doctors.html">
+        Doctors
+    </a>
+
+    <a href="patients.html">
+        Patients
+    </a>
+
+    <a href="appointments.html">
+        Appointments
+    </a>
+
+    <a
+        href="medical-records.html"
+        class="active">
+        Medical Records
+    </a>
+
+    <a href="invoices.html">
+        Invoices
+    </a>
+
+    <a
+        href="#"
+        id="logoutBtn">
+        Logout
+    </a>
+
+</div>
+
+<div class="main-content">
+
+    <div class="topbar d-flex justify-content-between">
+
+        <h3>
+            Quản lý bệnh án
+        </h3>
+
+        <button
+            class="btn btn-primary"
+            id="addRecordBtn">
+
+            Thêm bệnh án
+
+        </button>
+
+    </div>
+
+    <div class="card">
+
+        <div class="card-body">
+
+            <table
+                class="table table-striped">
+
+                <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Appointment</th>
+
+                    <th>Triệu chứng</th>
+
+                    <th>Chẩn đoán</th>
+
+                    <th>Đơn thuốc</th>
+
+                    <th>Ghi chú BS</th>
+
+                    <th>Ngày tạo</th>
+
+                    <th>Thao tác</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody
+                    id="recordTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div
+    class="modal fade"
+    id="recordModal"
+    tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Bệnh án
+
+                </h5>
+
+                <button
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <form id="recordForm">
+
+                    <input
+                        type="hidden"
+                        id="recordId">
+
+                    <div class="mb-3">
+
+                        <label>
+                            Appointment
+                        </label>
+
+                        <select
+                            id="appointmentId"
+                            class="form-select">
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>
+                            Triệu chứng
+                        </label>
+
+                        <textarea
+                            id="symptoms"
+                            class="form-control">
+                        </textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>
+                            Chẩn đoán
+                        </label>
+
+                        <textarea
+                            id="diagnosis"
+                            class="form-control">
+                        </textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>
+                            Đơn thuốc
+                        </label>
+
+                        <textarea
+                            id="prescription"
+                            class="form-control">
+                        </textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>
+                            Ghi chú bác sĩ
+                        </label>
+
+                        <textarea
+                            id="doctorNote"
+                            class="form-control">
+                        </textarea>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Hủy
+
+                </button>
+
+                <button
+                    class="btn btn-primary"
+                    id="saveRecordBtn">
+
+                    Lưu
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="assets/js/api.js"></script>
+
+<script src="assets/js/guard.js"></script>
+<script src="assets/js/role-guard.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="assets/js/medical-records.js"></script>
+
+</body>
+</html>

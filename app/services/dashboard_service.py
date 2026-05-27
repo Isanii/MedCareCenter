@@ -18,7 +18,7 @@ class DashboardService:
         db: Session
     ):
         """
-        Lấy dữ liệu Dashboard.
+        Lấy dữ liệu Dashboard Admin.
         """
 
         return (

@@ -27,7 +27,7 @@ from app.core.security import (
     create_access_token,
     create_refresh_token
 )
-
+from app.models.patient import Patient
 
 class AuthService:
     """
@@ -80,11 +80,22 @@ class AuthService:
             )
         )
 
-        return UserRepository.create(
+        created_user = UserRepository.create(
             db,
             new_user
         )
 
+        if created_user.role == "patient":
+
+            patient = Patient(
+                user_id=created_user.id
+            )
+
+            db.add(patient)
+
+            db.commit()
+
+        return created_user
     @staticmethod
     def login(
         db: Session,
@@ -130,7 +141,11 @@ class AuthService:
             raise ValueError(
                 "Email không tồn tại"
             )
-
+        if not user.is_active:
+            console.log(user.is_active)
+            raise ValueError(
+                "Tài khoản đã bị vô hiệu hóa"
+            )
         if not verify_password(
             password,
             user.hashed_password

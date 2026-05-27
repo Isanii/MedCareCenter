@@ -3,8 +3,12 @@ doctor_repository.py
 
 Thao tác dữ liệu bảng Doctor.
 """
-
-from sqlalchemy.orm import Session
+from sqlalchemy import or_
+from app.models.user import User
+from sqlalchemy.orm import (
+    Session,
+    joinedload
+)
 
 from app.models.doctor import Doctor
 
@@ -42,6 +46,11 @@ class DoctorRepository:
 
         return (
             db.query(Doctor)
+            .options(
+                joinedload(
+                    Doctor.user
+                )
+            )
             .filter(
                 Doctor.id == doctor_id
             )
@@ -52,11 +61,7 @@ class DoctorRepository:
     def get_by_user_id(
         db: Session,
         user_id: int
-    ) -> Doctor | None:
-        """
-        Tìm bác sĩ theo user_id.
-        """
-
+    ):
         return (
             db.query(Doctor)
             .filter(
@@ -67,17 +72,26 @@ class DoctorRepository:
 
     @staticmethod
     def get_all(
-        db: Session
+        db: Session,
+        skip: int = 0,
+        limit: int = 20
     ) -> list[Doctor]:
         """
-        Lấy danh sách bác sĩ.
+        Lấy danh sách bác sĩ có phân trang.
         """
 
         return (
             db.query(Doctor)
-            .order_by(
-                Doctor.id.desc()
+            .options(
+                joinedload(
+                    Doctor.user
+                )
             )
+            .order_by(
+                Doctor.id
+            )
+            .offset(skip)
+            .limit(limit)
             .all()
         )
 
@@ -108,3 +122,84 @@ class DoctorRepository:
         db.delete(doctor)
 
         db.commit()
+
+    @staticmethod
+    def search_by_specialty(
+        db: Session,
+        specialty: str
+    ) -> list[Doctor]:
+        """
+        Tìm bác sĩ theo chuyên khoa.
+        """
+
+        return (
+            db.query(Doctor)
+            .options(
+                joinedload(
+                    Doctor.user
+                )
+            )
+            .filter(
+                Doctor.specialty.contains(
+                    specialty
+                )
+            )
+            .order_by(
+                Doctor.id
+            )
+            .all()
+        )
+
+    @staticmethod
+    def search(
+        db: Session,
+        keyword: str | None = None,
+        min_exp: int | None = None
+    ):
+        """
+        Tìm kiếm bác sĩ theo:
+        - Họ tên
+        - Email
+        - Chuyên khoa
+        """
+
+        query = (
+            db.query(Doctor)
+            .join(User)
+            .options(
+                joinedload(
+                    Doctor.user
+                )
+            )
+        )
+
+        if keyword:
+
+            query = query.filter(
+                or_(
+                    User.fullname.contains(
+                        keyword
+                    ),
+                    User.email.contains(
+                        keyword
+                    ),
+                    Doctor.specialty.contains(
+                        keyword
+                    )
+                )
+            )
+
+        if min_exp is not None:
+
+            query = query.filter(
+                Doctor.years_of_experience
+                >= min_exp
+            )
+
+        return (
+            query
+            .order_by(
+                Doctor.id
+            )
+            .all()
+        )

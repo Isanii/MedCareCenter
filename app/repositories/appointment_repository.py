@@ -6,7 +6,10 @@ Repository quản lý lịch hẹn.
 
 from datetime import datetime
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import (
+    Session,
+    joinedload
+)
 
 from app.models.appointment import Appointment
 
@@ -35,6 +38,14 @@ class AppointmentRepository:
 
         return (
             db.query(Appointment)
+            .options(
+                joinedload(
+                    Appointment.patient
+                ),
+                joinedload(
+                    Appointment.doctor
+                )
+            )
             .filter(
                 Appointment.id == appointment_id
             )
@@ -43,14 +54,29 @@ class AppointmentRepository:
 
     @staticmethod
     def get_all(
-        db: Session
-    ) -> list[Appointment]:
+        db: Session,
+        skip: int = 0,
+        limit: int = 20
+    ):
+        """
+        Lấy danh sách lịch hẹn có phân trang.
+        """
 
         return (
             db.query(Appointment)
-            .order_by(
-                Appointment.id.desc()
+            .options(
+                joinedload(
+                    Appointment.patient
+                ),
+                joinedload(
+                    Appointment.doctor
+                )
             )
+            .order_by(
+                Appointment.id
+            )
+            .offset(skip)
+            .limit(limit)
             .all()
         )
 
@@ -125,4 +151,55 @@ class AppointmentRepository:
                 Appointment.doctor_id == doctor_id
             )
             .all()
+        )
+
+
+    @staticmethod
+    def get_by_patient_id(
+        db: Session,
+        patient_id: int
+    ):
+        return (
+            db.query(Appointment)
+            .options(
+                joinedload(
+                    Appointment.patient
+                ),
+                joinedload(
+                    Appointment.doctor
+                )
+            )
+            .filter(
+                Appointment.patient_id == patient_id
+            )
+            .order_by(
+                Appointment.id.desc()
+            )
+            .all()
+        )
+
+    @staticmethod
+    def get_by_doctor_id(
+        db: Session,
+        doctor_id: int
+    ):
+        return (
+            db.query(Appointment)
+            .filter(
+                Appointment.doctor_id
+                == doctor_id
+            )
+            .all()
+        )
+    @staticmethod
+    def get_by_user_id(
+        db: Session,
+        user_id: int
+    ):
+        return (
+            db.query(Doctor)
+            .filter(
+                Doctor.user_id == user_id
+            )
+            .first()
         )

@@ -8,11 +8,16 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from app.utils.constants import (AppointmentStatus)
+from app.utils.constants import (
+    AppointmentStatus
+)
 
-class AppointmentCreate(BaseModel):
+
+class AppointmentCreate(
+    BaseModel
+):
     """
-    Tạo lịch hẹn mới.
+    Admin tạo lịch hẹn.
     """
 
     patient_id: int
@@ -24,7 +29,23 @@ class AppointmentCreate(BaseModel):
     note: str | None = None
 
 
-class AppointmentResponse(BaseModel):
+class PatientAppointmentCreate(
+    BaseModel
+):
+    """
+    Bệnh nhân tự đặt lịch.
+    """
+
+    doctor_id: int
+
+    appointment_time: datetime
+
+    note: str | None = None
+
+
+class AppointmentResponse(
+    BaseModel
+):
     """
     Thông tin lịch hẹn.
     """
@@ -34,6 +55,10 @@ class AppointmentResponse(BaseModel):
     patient_id: int
 
     doctor_id: int
+
+    patient_name: str
+
+    doctor_name: str
 
     appointment_time: datetime
 
@@ -47,7 +72,12 @@ class AppointmentResponse(BaseModel):
         "from_attributes": True
     }
 
+
 class AppointmentUpdateStatus(
     BaseModel
 ):
+    """
+    Cập nhật trạng thái lịch hẹn.
+    """
+
     status: AppointmentStatus

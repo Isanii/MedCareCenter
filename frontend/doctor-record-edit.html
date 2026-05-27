@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+Sửa bệnh án
+</title>
+
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+</head>
+
+<body class="container mt-4">
+
+<h3>
+Sửa bệnh án
+</h3>
+
+<form id="editForm">
+
+<div class="mb-3">
+
+<label>
+Triệu chứng
+</label>
+
+<textarea
+id="symptoms"
+class="form-control"
+required>
+</textarea>
+
+</div>
+
+<div class="mb-3">
+
+<label>
+Chẩn đoán
+</label>
+
+<textarea
+id="diagnosis"
+class="form-control"
+required>
+</textarea>
+
+</div>
+
+<div class="mb-3">
+
+<label>
+Đơn thuốc
+</label>
+
+<textarea
+id="prescription"
+class="form-control"
+required>
+</textarea>
+
+</div>
+
+<div class="mb-3">
+
+<label>
+Ghi chú bác sĩ
+</label>
+
+<textarea
+id="doctor_note"
+class="form-control">
+</textarea>
+
+</div>
+
+<button
+class="btn btn-primary">
+
+Lưu thay đổi
+
+</button>
+
+</form>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/doctor-record-edit.js"></script>
+<script src="assets/js/role-guard.js"></script>
+
+
+</body>
+</html>

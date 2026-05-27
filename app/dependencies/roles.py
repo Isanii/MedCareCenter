@@ -34,3 +34,8 @@ ReceptionOrAdmin = require_roles(
     UserRole.ADMIN,
     UserRole.RECEPTIONIST
 )
+
+DoctorOrAdmin = require_roles(
+    UserRole.ADMIN,
+    UserRole.DOCTOR
+)

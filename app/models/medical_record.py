@@ -81,6 +81,26 @@ class MedicalRecord(Base, TimestampMixin):
         back_populates="medical_record"
     )
 
+    @property
+    def patient_name(
+        self
+    ):
+        return (
+            self.appointment
+            .patient
+            .fullname
+        )
+
+
+    @property
+    def doctor_name(
+        self
+    ):
+        return (
+            self.appointment
+            .doctor
+            .fullname
+        )
     def __repr__(self):
         return (
             f"<MedicalRecord("

@@ -7,10 +7,12 @@ Xử lý nghiệp vụ bác sĩ.
 from sqlalchemy.orm import Session
 
 from app.models.doctor import Doctor
+from app.models.user import User
 
 from app.schemas.doctor import (
     DoctorCreate,
-    DoctorUpdate
+    DoctorUpdate,
+    DoctorCreateWithUser
 )
 
 from app.repositories.doctor_repository import (
@@ -19,6 +21,14 @@ from app.repositories.doctor_repository import (
 
 from app.repositories.user_repository import (
     UserRepository
+)
+
+from app.core.security import (
+    hash_password
+)
+
+from app.utils.constants import (
+    UserRole
 )
 
 
@@ -33,7 +43,7 @@ class DoctorService:
         data: DoctorCreate
     ):
         """
-        Tạo hồ sơ bác sĩ.
+        Tạo hồ sơ bác sĩ từ user có sẵn.
         """
 
         user = UserRepository.get_by_id(
@@ -71,15 +81,70 @@ class DoctorService:
         )
 
     @staticmethod
-    def get_all_doctors(
-        db: Session
+    def create_doctor_with_user(
+        db: Session,
+        data: DoctorCreateWithUser
     ):
         """
-        Lấy danh sách bác sĩ.
+        Tạo User và Doctor cùng lúc.
         """
 
-        return DoctorRepository.get_all(
-            db
+        existing = UserRepository.get_by_email(
+            db,
+            data.email
+        )
+
+        if existing:
+            raise ValueError(
+                "Email đã tồn tại"
+            )
+
+        user = User(
+            fullname=data.fullname,
+            email=data.email,
+            phone=data.phone,
+            role=UserRole.DOCTOR,
+            hashed_password=hash_password(
+                data.password
+            )
+        )
+
+        db.add(user)
+
+        # Lấy user.id trước commit
+        db.flush()
+
+        doctor = Doctor(
+            user_id=user.id,
+            specialty=data.specialty,
+            room_number=data.room_number,
+            years_of_experience=data.years_of_experience
+        )
+
+        db.add(doctor)
+
+        db.commit()
+
+        db.refresh(doctor)
+
+        return doctor
+
+    @staticmethod
+    def get_all_doctors(
+        db: Session,
+        skip: int = 0,
+        limit: int = 20
+    ):
+        """
+        Danh sách bác sĩ.
+        """
+
+        return (
+            DoctorRepository.get_all(
+                db,
+                skip,
+                limit
+            )
         )
 
     @staticmethod
@@ -88,7 +153,7 @@ class DoctorService:
         doctor_id: int
     ):
         """
-        Lấy thông tin bác sĩ.
+        Chi tiết bác sĩ.
         """
 
         doctor = (
@@ -133,10 +198,7 @@ class DoctorService:
         if data.room_number is not None:
             doctor.room_number = data.room_number
 
-        if (
-            data.years_of_experience
-            is not None
-        ):
+        if data.years_of_experience is not None:
             doctor.years_of_experience = (
                 data.years_of_experience
             )
@@ -170,4 +232,34 @@ class DoctorService:
         DoctorRepository.delete(
             db,
             doctor
+        )
+
+    @staticmethod
+    def search_doctors(
+        db: Session,
+        specialty: str
+    ):
+        """
+        Tìm bác sĩ theo chuyên khoa.
+        """
+
+        return (
+            DoctorRepository.search_by_specialty(
+                db,
+                specialty
+            )
+        )
+
+    @staticmethod
+    def search(
+        db: Session,
+        keyword: str | None = None,
+        min_exp: int | None = None
+    ):
+        return (
+            DoctorRepository.search(
+                db,
+                keyword,
+                min_exp
+            )
         )

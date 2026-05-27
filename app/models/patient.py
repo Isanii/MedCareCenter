@@ -70,6 +70,20 @@ class Patient(Base, TimestampMixin):
         back_populates="patient"
     )
 
+    @property
+    def fullname(self):
+        return self.user.fullname
+
+
+    @property
+    def email(self):
+        return self.user.email
+
+
+    @property
+    def phone(self):
+        return self.user.phone
+
     appointments = relationship(
         "Appointment",
         back_populates="patient"

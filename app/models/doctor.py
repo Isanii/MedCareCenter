@@ -64,6 +64,15 @@ class Doctor(Base, TimestampMixin):
         back_populates="doctor"
     )
 
+    @property
+    def fullname(self):
+        return self.user.fullname
+
+
+    @property
+    def email(self):
+        return self.user.email
+        
     appointments = relationship(
         "Appointment",
         back_populates="doctor"

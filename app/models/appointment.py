@@ -100,6 +100,15 @@ class Appointment(Base, TimestampMixin):
         "Doctor",
         back_populates="appointments"
     )
+    
+    @property
+    def patient_name(self):
+        return self.patient.fullname
+
+
+    @property
+    def doctor_name(self):
+        return self.doctor.fullname
 
     medical_record = relationship(
         "MedicalRecord",

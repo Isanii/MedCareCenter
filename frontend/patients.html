@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Patients</title>
+
+<link
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="assets/css/style.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="sidebar-header">
+        MedCare
+    </div>
+
+    <a href="dashboard.html">
+        Dashboard
+    </a>
+
+    <a href="doctors.html">
+        Doctors
+    </a>
+
+    <a
+        href="patients.html"
+        class="active">
+        Patients
+    </a>
+
+    <a href="appointments.html">
+        Appointments
+    </a>
+
+    <a href="medical-records.html">
+        Medical Records
+    </a>
+    <a href="invoices.html">
+        Invoices
+    </a>
+
+    <a
+        href="#"
+        id="logoutBtn">
+        Logout
+    </a>
+
+</div>
+
+<div class="main-content">
+
+    <div class="topbar d-flex justify-content-between">
+
+        <h3>
+            Quản lý bệnh nhân
+        </h3>
+
+        <button
+            class="btn btn-primary"
+            id="addPatientBtn">
+
+            Thêm bệnh nhân
+
+        </button>
+
+    </div>
+
+    <div class="card">
+
+        <div class="card-body">
+
+            <div class="row mb-3">
+
+                <div class="col-md-6">
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        class="form-control"
+                        placeholder="Tìm bệnh nhân...">
+
+                </div>
+
+            </div>
+
+            <table
+                class="table table-striped">
+
+                <thead>
+
+                <tr>
+
+                  <th>ID</th>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>SĐT</th>
+                <th>Giới tính</th>
+                <th>Địa chỉ</th>
+                <th>Ngày sinh</th>
+                <th>Thao tác</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="patientTable">
+
+                </tbody>
+
+            </table>
+            <div
+                class="d-flex
+                       justify-content-between
+                       align-items-center
+                       mt-3">
+
+                <button
+                    class="btn btn-outline-primary"
+                    id="prevBtn">
+
+                    ← Trang trước
+
+                </button>
+
+                <span id="pageInfo">
+
+                    Trang 1
+
+                </span>
+
+                <button
+                    class="btn btn-outline-primary"
+                    id="nextBtn">
+
+                    Trang sau →
+
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="modal fade"
+    id="patientModal"
+    tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Thêm bệnh nhân
+
+                </h5>
+
+                <button
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <form id="patientForm">
+
+                    <div class="mb-3">
+
+                        <label>Họ tên</label>
+
+                        <input
+                            type="text"
+                            id="fullname"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Email</label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Số điện thoại</label>
+
+                        <input
+                            type="text"
+                            id="phone"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Mật khẩu</label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Ngày sinh</label>
+
+                        <input
+                            type="date"
+                            id="birthday"
+                            class="form-control">
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Giới tính</label>
+
+                        <select
+                            id="gender"
+                            class="form-select">
+
+                            <option value="">
+                                Chọn
+                            </option>
+
+                            <option value="Nam">
+                                Nam
+                            </option>
+
+                            <option value="Nữ">
+                                Nữ
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label>Địa chỉ</label>
+
+                        <textarea
+                            id="address"
+                            class="form-control">
+                        </textarea>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Hủy
+
+                </button>
+
+                <button
+                    class="btn btn-primary"
+                    id="savePatientBtn">
+
+                    Lưu
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/guard.js"></script>
+<script src="assets/js/role-guard.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="assets/js/patients.js"></script>
+</body>
+
+</html>

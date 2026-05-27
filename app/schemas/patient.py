@@ -23,15 +23,31 @@ class PatientCreate(BaseModel):
 
     address: str | None = None
 
+class PatientCreateWithUser(BaseModel):
+    fullname: str
 
+    email: str
+
+    phone: str
+
+    password: str
+
+    birthday: date | None = None
+
+    gender: str | None = None
+
+    address: str | None = None
+    
 class PatientResponse(BaseModel):
-    """
-    Thông tin bệnh nhân.
-    """
-
     id: int
 
     user_id: int
+
+    fullname: str
+
+    email: str
+
+    phone: str | None
 
     birthday: date | None
 
@@ -44,6 +60,7 @@ class PatientResponse(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
 
 class PatientUpdate(BaseModel):
     """

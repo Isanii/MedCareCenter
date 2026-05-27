@@ -1,4 +1,8 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import (
+    BaseSettings,
+    SettingsConfigDict
+)
+
 from functools import lru_cache
 
 
@@ -13,9 +17,18 @@ class Settings(BaseSettings):
 
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
-    class Config:
-        env_file = ".env"
+    model_config = SettingsConfigDict(
+        env_file=".env"
+    )
+    MAIL_USERNAME: str
+    MAIL_PASSWORD: str
+    MAIL_FROM: str
 
+    MAIL_SERVER: str
+    MAIL_PORT: int
+
+    MAIL_STARTTLS: bool = True
+    MAIL_SSL_TLS: bool = False
 
 @lru_cache
 def get_settings():

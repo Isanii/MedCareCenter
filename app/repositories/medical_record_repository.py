@@ -10,7 +10,9 @@ from app.models.medical_record import (
     MedicalRecord
 )
 
-
+from app.models.appointment import (
+    Appointment
+)
 class MedicalRecordRepository:
 
     @staticmethod
@@ -102,3 +104,53 @@ class MedicalRecordRepository:
         db.delete(record)
 
         db.commit()
+
+
+    @staticmethod
+    def get_by_patient_id(
+        db: Session,
+        patient_id: int
+    ):
+        """
+        Danh sách bệnh án của bệnh nhân.
+        """
+
+        return (
+            db.query(MedicalRecord)
+            .join(
+                Appointment,
+                MedicalRecord.appointment_id
+                ==
+                Appointment.id
+            )
+            .filter(
+                Appointment.patient_id
+                ==
+                patient_id
+            )
+            .order_by(
+                MedicalRecord.id.desc()
+            )
+            .all()
+        )
+
+    @staticmethod
+    def get_by_doctor_id(
+        db: Session,
+        doctor_id: int
+    ):
+        return (
+            db.query(MedicalRecord)
+            .join(
+                Appointment,
+                MedicalRecord.appointment_id
+                ==
+                Appointment.id
+            )
+            .filter(
+                Appointment.doctor_id
+                ==
+                doctor_id
+            )
+            .all()
+        )

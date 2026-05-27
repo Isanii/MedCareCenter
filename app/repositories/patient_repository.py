@@ -3,11 +3,12 @@ patient_repository.py
 
 Thao tác dữ liệu bệnh nhân.
 """
-
-from sqlalchemy.orm import Session
-
+from sqlalchemy.orm import (
+    Session,
+    joinedload
+)
 from app.models.patient import Patient
-
+from app.models.user import User
 
 class PatientRepository:
 
@@ -33,6 +34,11 @@ class PatientRepository:
 
         return (
             db.query(Patient)
+            .options(
+                joinedload(
+                    Patient.user
+                )
+            )
             .filter(
                 Patient.id == patient_id
             )
@@ -41,11 +47,26 @@ class PatientRepository:
 
     @staticmethod
     def get_all(
-        db: Session
+        db: Session,
+        skip: int = 0,
+        limit: int = 20
     ) -> list[Patient]:
+        """
+        Lấy danh sách bệnh nhân có phân trang.
+        """
 
         return (
             db.query(Patient)
+            .options(
+                joinedload(
+                    Patient.user
+                )
+            )
+            .order_by(
+                Patient.id
+            )
+            .offset(skip)
+            .limit(limit)
             .all()
         )
 
@@ -94,3 +115,39 @@ class PatientRepository:
         db.delete(patient)
 
         db.commit()
+
+
+    @staticmethod
+    def search(
+        db: Session,
+        keyword: str
+    ):
+        """
+        Tìm kiếm bệnh nhân theo:
+        - Họ tên
+        - Số điện thoại
+        - Địa chỉ
+        """
+
+        return (
+            db.query(Patient)
+            .join(User)
+            .options(
+                joinedload(
+                    Patient.user
+                )
+            )
+            .filter(
+                (User.fullname.contains(keyword))
+                |
+                (User.phone.contains(keyword))
+                |
+                (Patient.address.contains(keyword))
+            )
+            .order_by(
+                Patient.id
+            )
+            .all()
+        )
+
+    

@@ -18,12 +18,22 @@ from app.services.appointment_service import (
 
 from app.schemas.appointment import (
     AppointmentCreate,
+    PatientAppointmentCreate,
     AppointmentResponse,
     AppointmentUpdateStatus
 )
 
+from app.dependencies.auth import (
+    get_current_user
+)
+
+from app.models.user import User
+
 from app.dependencies.roles import (
-    PatientOnly
+    AdminOnly,
+    PatientOnly,
+    DoctorOnly,
+    ReceptionOrAdmin
 )
 
 router = APIRouter(
@@ -31,21 +41,22 @@ router = APIRouter(
     tags=["Appointments"]
 )
 
-#Tạo lịch hẹn
+
+# ==========================
+# ADMIN TẠO LỊCH HẸN
+# ==========================
 
 @router.post(
     "/",
     response_model=AppointmentResponse,
-    dependencies=[Depends(PatientOnly)]
+    dependencies=[Depends(AdminOnly)],
+    status_code=201,
+    summary="Admin tạo lịch hẹn"
 )
 def create_appointment(
     data: AppointmentCreate,
     db: Session = Depends(get_db)
 ):
-    """
-    Đặt lịch khám.
-    """
-
     try:
 
         return (
@@ -62,20 +73,149 @@ def create_appointment(
             detail=str(e)
         )
 
-#Danh sách lịch hẹn
+
+# ==========================
+# PATIENT TỰ ĐẶT LỊCH
+# ==========================
+
+@router.post(
+    "/my",
+    response_model=AppointmentResponse,
+    dependencies=[Depends(PatientOnly)],
+    status_code=201,
+    summary="Bệnh nhân tự đặt lịch"
+)
+def create_my_appointment(
+    data: PatientAppointmentCreate,
+    current_user: User = Depends(
+        get_current_user
+    ),
+    db: Session = Depends(
+        get_db
+    )
+):
+    try:
+
+        return (
+            AppointmentService
+            .create_my_appointment(
+                db,
+                current_user,
+                data
+            )
+        )
+
+    except ValueError as e:
+
+        raise HTTPException(
+            status_code=400,
+            detail=str(e)
+        )
+
+
+# ==========================
+# DANH SÁCH LỊCH HẸN
+# ==========================
+
 @router.get(
     "/",
-    response_model=list[AppointmentResponse]
+    response_model=list[
+        AppointmentResponse
+    ],
+    dependencies=[
+        Depends(
+            ReceptionOrAdmin
+        )
+    ]
 )
-def get_all(
-    db: Session = Depends(get_db)
+def get_appointments(
+    skip: int = 0,
+    limit: int = 20,
+    db: Session = Depends(
+        get_db
+    )
 ):
-    return AppointmentService.get_all(
-        db
+    return (
+        AppointmentService
+        .get_all_appointments(
+            db,
+            skip,
+            limit
+        )
     )
 
+# ==========================
+# LỊCH HẸN CỦA TÔI
+# ==========================
 
-#Chi tiết lịch hẹn
+@router.get(
+    "/my",
+    response_model=list[
+        AppointmentResponse
+    ]
+)
+def my_appointments(
+    current_user: User = Depends(
+        get_current_user
+    ),
+    db: Session = Depends(
+        get_db
+    )
+):
+    try:
+
+        return (
+            AppointmentService
+            .get_my_appointments(
+                db,
+                current_user
+            )
+        )
+
+    except ValueError as e:
+
+        raise HTTPException(
+            status_code=404,
+            detail=str(e)
+        )
+
+@router.get(
+    "/my-doctor",
+    response_model=list[
+        AppointmentResponse
+    ],
+    dependencies=[
+        Depends(DoctorOnly)
+    ]
+)
+def my_doctor_appointments(
+    current_user: User = Depends(
+        get_current_user
+    ),
+    db: Session = Depends(
+        get_db
+    )
+):
+    try:
+
+        return (
+            AppointmentService
+            .get_doctor_appointments(
+                db,
+                current_user
+            )
+        )
+
+    except ValueError as e:
+
+        raise HTTPException(
+            status_code=404,
+            detail=str(e)
+        )
+# ==========================
+# CHI TIẾT LỊCH HẸN
+# ==========================
+
 @router.get(
     "/{appointment_id}",
     response_model=AppointmentResponse
@@ -87,7 +227,8 @@ def get_appointment(
     try:
 
         return (
-            AppointmentService.get_appointment(
+            AppointmentService
+            .get_appointment(
                 db,
                 appointment_id
             )
@@ -100,10 +241,15 @@ def get_appointment(
             detail=str(e)
         )
 
-#Cập nhật trạng thái
+
+# ==========================
+# CẬP NHẬT TRẠNG THÁI
+# ==========================
+
 @router.patch(
     "/{appointment_id}/status",
-    response_model=AppointmentResponse
+    response_model=AppointmentResponse,
+    summary="Cập nhật trạng thái lịch hẹn"
 )
 def update_status(
     appointment_id: int,
@@ -113,7 +259,8 @@ def update_status(
     try:
 
         return (
-            AppointmentService.update_status(
+            AppointmentService
+            .update_status(
                 db,
                 appointment_id,
                 data.status

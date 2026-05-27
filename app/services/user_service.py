@@ -36,3 +36,27 @@ class UserService:
         """
 
         return UserRepository.get_all(db)
+
+    @staticmethod
+    def set_active_status(
+        db: Session,
+        user_id: int,
+        is_active: bool
+    ):
+        user = UserRepository.get_by_id(
+            db,
+            user_id
+        )
+
+        if not user:
+            raise ValueError(
+                "Không tìm thấy tài khoản"
+            )
+
+        user.is_active = is_active
+
+        db.commit()
+
+        db.refresh(user)
+
+        return user

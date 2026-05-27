@@ -24,18 +24,14 @@ class DoctorCreate(BaseModel):
 
 
 class DoctorResponse(BaseModel):
-    """
-    Thông tin bác sĩ.
-    """
-
     id: int
-
     user_id: int
 
+    fullname: str
+    email: str
+
     specialty: str
-
-    room_number: str | None
-
+    room_number: str
     years_of_experience: int
 
     created_at: datetime
@@ -54,3 +50,19 @@ class DoctorUpdate(BaseModel):
     room_number: str | None = None
 
     years_of_experience: int | None = None
+
+
+class DoctorCreateWithUser(BaseModel):
+    fullname: str
+
+    email: str
+
+    phone: str
+
+    password: str
+
+    specialty: str
+
+    room_number: str | None = None
+
+    years_of_experience: int = 0
